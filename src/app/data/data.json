@@ -1,3 +1,19 @@
 {
-    
+    "items": [
+        {
+            "uuid": 1,
+            "name": "eggs",
+            "quantity": 12
+        },
+        {
+            "uuid": 2,
+            "name": "bread",
+            "quantity": 1
+        },
+        {
+            "uuid": 3,
+            "name": "milk",
+            "quantity": 1
+        }
+    ]
 }
