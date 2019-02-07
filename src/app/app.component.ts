@@ -29,7 +29,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         // Define a local observable that will be bound to the items property of our store
-        this.groceryList$ = this.store.pipe(select('reducer'));
+        // 'groceryList' is what we registered our reducer as in app.module.ts
+        this.groceryList$ = this.store.pipe(select('groceryList'));
 
         // Bind the store to recieve updates and update our component with new data
         this.subscriptions.add(this.groceryList$.subscribe((groceryList) => {

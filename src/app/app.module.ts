@@ -7,14 +7,16 @@ import { AppComponent } from './app.component';
 
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    StoreModule.forRoot({ reducer })
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent
+    ],
+    imports: [
+        BrowserModule,
+        StoreModule.forRoot({
+            groceryList: reducer
+        })
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
