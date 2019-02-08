@@ -15,5 +15,9 @@
       <td *ngIf="item.price">${{item.price}}</td>
       <td *ngIf="item.price">${{item.price * item.quantity}}</td>
     </tr>
+    <tr>
+      <td><input [(ngModel)]="quantityInput" type='text' name='quantity' id='quantityInput'/></td>
+      <td><input [(ngModel)]="nameInput" type='text' name='name' id='nameInput'/></td>
+      <td><button (click)="addItem()">Add Item</button></td>
   </tbody>
 </table>

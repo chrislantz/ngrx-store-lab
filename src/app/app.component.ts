@@ -1,10 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { v4 as newUuid } from 'uuid';
 import { Store, select } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 
 import { GroceryList } from './data.model';
-import { LoadGroceryListAction } from './store/actions';
+import {
+    LoadGroceryListAction,
+    AddGroceryItemAction,
+    RemoveGroceryItemAction
+} from './store/actions';
 import groceryData from './data/data.json';
 
 interface AppState {
@@ -20,6 +25,10 @@ export class AppComponent implements OnInit, OnDestroy {
     title = 'Grocery List';
     groceryList$: Observable<GroceryList>; // Observable
     groceryList: GroceryList; // View variable
+
+    // inputs
+    quantityInput = '';
+    nameInput = '';
 
     subscriptions: Subscription = new Subscription;
 
@@ -42,6 +51,28 @@ export class AppComponent implements OnInit, OnDestroy {
             // Here we have revieved groceryData and are loading it into the store
             this.store.dispatch(new LoadGroceryListAction(groceryData));
         }, 0);
+    }
+
+    addItem() {
+        const name = this.nameInput;
+        const quantity = parseInt(this.quantityInput) || 1;
+        const uuid = newUuid();
+
+        // Dispatch an add action to the store
+        this.store.dispatch(new AddGroceryItemAction({
+            uuid,
+            name,
+            quantity
+        }));
+
+        // reset the inputs
+        this.nameInput = '';
+        this.quantityInput = '';
+    }
+
+    removeItem(uuid: string) {
+        // Dispatch a remove action to the store
+        this.store.dispatch(new RemoveGroceryItemAction(uuid));
     }
 
     ngOnDestroy() {
