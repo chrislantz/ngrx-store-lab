@@ -4,7 +4,9 @@ import { GroceryItem } from '../data.model';
 export enum GroceryListActionTypes {
     LOAD_GROCERY_LIST = 'LOAD_GROCERY_LIST',
     ADD_GROCERY_ITEM = 'ADD_GROCERY_ITEM',
-    REMOVE_GROCERY_ITEM = 'REMOVE_GROCERY_ITEM'
+    REMOVE_GROCERY_ITEM = 'REMOVE_GROCERY_ITEM',
+    INCREMENT_ITEM_QUANTITY = 'INCREMENT_ITEM_QUANTITY',
+    DECREMENT_ITEM_QUANTITY = 'DECREMENT_ITEM_QUANTITY'
 }
 
 export class LoadGroceryListAction implements Action {
@@ -25,8 +27,22 @@ export class RemoveGroceryItemAction implements Action {
     constructor(public uuid: string) {}
 }
 
+export class DecrementItemQuantityAction implements Action {
+    readonly type = GroceryListActionTypes.DECREMENT_ITEM_QUANTITY;
+
+    constructor(public uuid: string) {}
+}
+
+export class IncrementItemQuantityAction implements Action {
+    readonly type = GroceryListActionTypes.INCREMENT_ITEM_QUANTITY;
+
+    constructor(public uuid: string) {}
+}
+
 export type GroceryListAction =
     | LoadGroceryListAction
     | AddGroceryItemAction
     | RemoveGroceryItemAction
+    | DecrementItemQuantityAction
+    | IncrementItemQuantityAction
     ;

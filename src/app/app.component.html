@@ -10,7 +10,11 @@
   </thead>
   <tbody>
     <tr *ngFor="let item of groceryList.items">
-      <td>{{item.quantity}}</td>
+      <td>
+        <button (click)="incrementItemQuantity(item.uuid)">+</button>
+        {{item.quantity}}
+        <button (click)="decrementItemQuantity(item.uuid)">-</button>
+      </td>
       <td>{{item.name}}</td>
       <td *ngIf="item.price">${{item.price}}</td>
       <td *ngIf="item.price">${{item.price * item.quantity}}</td>

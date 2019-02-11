@@ -8,7 +8,9 @@ import { GroceryList } from './data.model';
 import {
     LoadGroceryListAction,
     AddGroceryItemAction,
-    RemoveGroceryItemAction
+    RemoveGroceryItemAction,
+    IncrementItemQuantityAction,
+    DecrementItemQuantityAction
 } from './store/actions';
 import groceryData from './data/data.json';
 
@@ -65,7 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
             quantity
         }));
 
-        // reset the inputs
+        // Reset the inputs
         this.nameInput = '';
         this.quantityInput = '';
     }
@@ -73,6 +75,14 @@ export class AppComponent implements OnInit, OnDestroy {
     removeItem(uuid: string) {
         // Dispatch a remove action to the store
         this.store.dispatch(new RemoveGroceryItemAction(uuid));
+    }
+
+    incrementItemQuantity(uuid: string): void {
+        this.store.dispatch(new IncrementItemQuantityAction(uuid));
+    }
+
+    decrementItemQuantity(uuid: string): void {
+        this.store.dispatch(new DecrementItemQuantityAction(uuid));
     }
 
     ngOnDestroy() {
