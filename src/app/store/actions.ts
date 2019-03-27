@@ -6,7 +6,8 @@ export enum GroceryListActionTypes {
     ADD_GROCERY_ITEM = 'ADD_GROCERY_ITEM',
     REMOVE_GROCERY_ITEM = 'REMOVE_GROCERY_ITEM',
     INCREMENT_ITEM_QUANTITY = 'INCREMENT_ITEM_QUANTITY',
-    DECREMENT_ITEM_QUANTITY = 'DECREMENT_ITEM_QUANTITY'
+    DECREMENT_ITEM_QUANTITY = 'DECREMENT_ITEM_QUANTITY',
+    NO_OP = 'NO_OP'
 }
 
 export class LoadGroceryListAction implements Action {
@@ -37,6 +38,11 @@ export class IncrementItemQuantityAction implements Action {
     readonly type = GroceryListActionTypes.INCREMENT_ITEM_QUANTITY;
 
     constructor(public uuid: string) {}
+}
+
+export class NoopAction implements Action {
+    readonly type = GroceryListActionTypes.NO_OP;
+    constructor() {}
 }
 
 export type GroceryListAction =

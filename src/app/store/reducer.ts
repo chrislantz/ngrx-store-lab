@@ -26,23 +26,51 @@ function loadGroceryList(state: GroceryList, action: LoadGroceryListAction): Gro
 }
 
 function addGroceryItem(state: GroceryList, action: AddGroceryItemAction): GroceryList {
-    // TODO: write this reducer
-    return null;
+    const updatedItems = cloneDeep(state.items);
+
+    updatedItems.push(action.item);
+
+    return {
+        ...state,
+        items: updatedItems
+    };
 }
 
 function removeGroceryItem(state: GroceryList, action: RemoveGroceryItemAction): GroceryList {
-    // TODO: write this reducer
-    return null;
+    const newItems = [...reject(state.items, { uuid: action.uuid })];
+
+    return {
+        ...state,
+        items: newItems
+    };
 }
 
 function decrementItemQuantity(state: GroceryList, action: DecrementItemQuantityAction): GroceryList {
-    // TODO: write this reducer
-    return null;
+    const updatedItems = cloneDeep(state.items);
+    const item = filter(updatedItems, { uuid: action.uuid });
+
+    if (item && item.length && item[0].quantity) {
+        item[0].quantity--;
+    }
+
+    return {
+        ...state,
+        items: updatedItems
+    };
 }
 
 function incrementItemQuantity(state: GroceryList, action: IncrementItemQuantityAction): GroceryList {
-    // TODO: write this reducer
-    return null;
+    const updatedItems = cloneDeep(state.items);
+    const item = filter(updatedItems, { uuid: action.uuid });
+
+    if (item && item.length) {
+        item[0].quantity++;
+    }
+
+    return {
+        ...state,
+        items: updatedItems
+    }
 }
 
 // The reducer dispatch method, we send the action to a specific reducer function based upon
