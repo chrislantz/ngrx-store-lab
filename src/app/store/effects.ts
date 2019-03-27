@@ -20,4 +20,16 @@ export class GroceryListEffects {
     // with. When such an action occurs, the effect may combine action data,
     // the current state of the store, and any other data. It returns a new
     // action which is dispatched against the store.
+
+    @Effect()
+    emptyQuantity$ = this.actions$.ofType<DecrementItemQuantityAction>(GroceryListActionTypes.DECREMENT_ITEM_QUANTITY)
+    .withLatestFrom(this.store)
+    .map(([action, state]) => {
+        const item = find(state.groceryList.items, { uuid: action.uuid });
+        const quantity = item.quantity;
+        if (quantity < 1) {
+            return new RemoveGroceryItemAction(action.uuid);
+        }
+        return new NoopAction();
+    });
 }
