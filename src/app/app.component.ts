@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
 import { v4 as newUuid } from 'uuid';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
@@ -21,7 +21,8 @@ interface AppState {
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+    styleUrls: ['./app.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit, OnDestroy {
     title = 'Grocery List';
