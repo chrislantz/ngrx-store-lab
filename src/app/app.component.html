@@ -1,15 +1,19 @@
 <h1>{{title}}</h1>
-<table *ngIf="groceryList">
+<div class="filterContainer">
+  <label for="filter">Filter:</label>
+  <input [(ngModel)]="filterInput" type="text" id="filter" name="filter" (ngModelChange)="filterChanged($event)"/>
+</div>
+<table *ngIf="groceryList$ | async as groceryList">
   <thead>
     <tr>    
-      <th>Quantity</th>
-      <th>Item</th>
+      <th (click)="sort('quantity')">Quantity</th>
+      <th (click)="sort('name')">Item</th>
       <th>Price per Unit</th>
       <th>Total Price</th>
     </tr> 
   </thead>
   <tbody>
-    <tr *ngFor="let item of groceryList.items">
+    <tr *ngFor="let item of groceryList">
       <td>
         <button (click)="incrementItemQuantity(item.uuid)">+</button>
         {{item.quantity}}
@@ -20,8 +24,8 @@
       <td *ngIf="item.price">${{item.price * item.quantity}}</td>
     </tr>
     <tr>
-      <td><input [(ngModel)]="quantityInput" type='text' name='quantity' id='quantityInput'/></td>
-      <td><input [(ngModel)]="nameInput" type='text' name='name' id='nameInput'/></td>
+      <td><input [(ngModel)]="quantityInput" type="text" name="quantity" id="quantityInput"/></td>
+      <td><input [(ngModel)]="nameInput" type="text" name="name" id="nameInput"/></td>
       <td><button (click)="addItem()">Add Item</button></td>
   </tbody>
 </table>

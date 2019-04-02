@@ -1,4 +1,4 @@
-import { GroceryList } from '../data.model';
+import { GroceryList, GroceryItemSort } from '../data.model';
 import { reject, filter, cloneDeep } from 'lodash';
 
 import {
@@ -8,12 +8,22 @@ import {
     RemoveGroceryItemAction,
     IncrementItemQuantityAction,
     DecrementItemQuantityAction,
+    SetFilterAction,
+    SetSortAction,
     GroceryListActionTypes
 } from './actions';
 
 // Default empty state for our store.
 const initialGroceryList: GroceryList = {
-    items: []
+    items: [],
+    filter: {
+        search: '',
+        prop: 'name'
+    },
+    sort: {
+        sort: ['quantity'],
+        sortOrder: ['desc']
+    }
 };
 
 // A specific reducer method for the LoadGroceryListAction. It is important that we return
@@ -21,7 +31,8 @@ const initialGroceryList: GroceryList = {
 // from the action.
 function loadGroceryList(state: GroceryList, action: LoadGroceryListAction): GroceryList {
     return {
-        ...action.groceryList
+        ...state,
+        items: action.groceryList.items
     };
 }
 
@@ -73,6 +84,30 @@ function incrementItemQuantity(state: GroceryList, action: IncrementItemQuantity
     }
 }
 
+function setFilter(state: GroceryList, action: SetFilterAction): GroceryList {
+    return {
+        ...state,
+        filter: action.filter
+    }
+}
+
+function setSort(state: GroceryList, action: SetSortAction): GroceryList {
+    let sortOrder = ['desc'];
+    // if we triggered an action with the same sort as currently exists, we want to toggle the sort order
+    if (state.sort.sortOrder && state.sort.sortOrder.length && action.sort === state.sort.sort[0]) {
+        sortOrder[0] = (state.sort.sortOrder[0] === 'asc') ? 'desc' : 'asc';
+    }
+
+    const newSort: GroceryItemSort = {
+        sort: [action.sort],
+        sortOrder
+    }
+    return {
+        ...state,
+        sort: newSort
+    }
+}
+
 // The reducer dispatch method, we send the action to a specific reducer function based upon
 // the actions type, compute an updated state and return it.
 export function reducer(state: GroceryList = initialGroceryList, action: GroceryListAction) {
@@ -93,6 +128,12 @@ export function reducer(state: GroceryList = initialGroceryList, action: Grocery
             break;
         case GroceryListActionTypes.INCREMENT_ITEM_QUANTITY:
             newState = incrementItemQuantity(state, action);
+            break;
+        case GroceryListActionTypes.SET_FILTER:
+            newState = setFilter(state, action);
+            break;
+        case GroceryListActionTypes.SET_SORT:
+            newState = setSort(state, action);
             break;
     }
 

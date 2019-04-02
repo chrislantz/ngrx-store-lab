@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { GroceryItem } from '../data.model';
+import { GroceryItem, GroceryItemFilter, GroceryItemSort } from '../data.model';
 
 export enum GroceryListActionTypes {
     LOAD_GROCERY_LIST = 'LOAD_GROCERY_LIST',
@@ -7,6 +7,8 @@ export enum GroceryListActionTypes {
     REMOVE_GROCERY_ITEM = 'REMOVE_GROCERY_ITEM',
     INCREMENT_ITEM_QUANTITY = 'INCREMENT_ITEM_QUANTITY',
     DECREMENT_ITEM_QUANTITY = 'DECREMENT_ITEM_QUANTITY',
+    SET_FILTER = 'SET_FILTER',
+    SET_SORT = 'SET_SORT',
     NO_OP = 'NO_OP'
 }
 
@@ -45,10 +47,22 @@ export class NoopAction implements Action {
     constructor() {}
 }
 
+export class SetFilterAction implements Action {
+    readonly type = GroceryListActionTypes.SET_FILTER;
+    constructor(public filter: GroceryItemFilter) {}
+}
+
+export class SetSortAction implements Action {
+    readonly type = GroceryListActionTypes.SET_SORT;
+    constructor(public sort: string) {}
+}
+
 export type GroceryListAction =
     | LoadGroceryListAction
     | AddGroceryItemAction
     | RemoveGroceryItemAction
     | DecrementItemQuantityAction
     | IncrementItemQuantityAction
+    | SetSortAction
+    | SetFilterAction
     ;

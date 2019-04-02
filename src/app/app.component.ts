@@ -10,9 +10,12 @@ import {
     AddGroceryItemAction,
     RemoveGroceryItemAction,
     IncrementItemQuantityAction,
-    DecrementItemQuantityAction
+    DecrementItemQuantityAction,
+    SetSortAction,
+    SetFilterAction,
 } from './store/actions';
 import groceryData from './data/data.json';
+import { fromGroceries } from './store/selectors';
 
 interface AppState {
     data: any;
@@ -31,22 +34,14 @@ export class AppComponent implements OnInit, OnDestroy {
     // inputs
     quantityInput = '';
     nameInput = '';
-
-    subscriptions: Subscription = new Subscription;
+    filterInput = '';
 
     constructor (
         private store: Store<AppState>
     ) {}
 
     ngOnInit() {
-        // Define a local observable that will be bound to the items property of our store
-        // 'groceryList' is what we registered our reducer as in app.module.ts
-        this.groceryList$ = this.store.pipe(select('groceryList'));
-
-        // Bind the store to recieve updates and update our component with new data
-        this.subscriptions.add(this.groceryList$.subscribe((groceryList) => {
-            this.groceryList = groceryList;
-        }));
+        this.groceryList$ = this.store.select(fromGroceries.selectFilteredAndSortedGroceryItems);
 
         // Pretend this was the result of getting this data via some async fetch
         setTimeout(() => {
@@ -85,8 +80,13 @@ export class AppComponent implements OnInit, OnDestroy {
         this.store.dispatch(new DecrementItemQuantityAction(uuid));
     }
 
-    ngOnDestroy() {
-        // Unsubscribe from all the subscriptions we have setup in this component
-        this.subscriptions.unsubscribe();
+    sort(sort: string) {
+        this.store.dispatch(new SetSortAction(sort));
     }
+
+    filterChanged(value: string) {
+        this.store.dispatch(new SetFilterAction({ search: value, prop: 'name' }));
+    }
+
+    ngOnDestroy() {}
 }
