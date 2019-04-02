@@ -20,10 +20,24 @@ const selectGroceryItemSort = createSelector(
     (groceryList: GroceryList) => groceryList.sort,
 );
 
+const selectFilteredAndSortedGroceryItems = createSelector(
+    selectGroceryItems,
+    selectGroceryItemFilter,
+    selectGroceryItemSort,
+    (items: GroceryItem[], itemFilter: GroceryItemFilter, sort: GroceryItemSort) => {
+        return orderBy(filter(items, (item: GroceryItem) => {
+            const searched = item[itemFilter.prop];
+            if (searched && typeof searched === 'string') {
+                return !itemFilter.search || searched.includes(itemFilter.search);
+            }
+            return false;
+        }), sort.sort, sort.sortOrder);
+    }
+);
+
 export const fromGroceries = {
     selectGroceryItems,
     selectGroceryItemFilter,
     selectGroceryItemSort,
-    // TODO: implement this selector
-    // selectFilteredAndSortedGroceryItems,
+    selectFilteredAndSortedGroceryItems,
 };
