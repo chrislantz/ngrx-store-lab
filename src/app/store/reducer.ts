@@ -27,9 +27,8 @@ export function reducer(state: GroceryList = initialGroceryList, action: Grocery
 
     switch (action.type) {
         case GroceryListActionTypes.LOAD_GROCERY_LIST:
-            newState = loadGroceryList(state, action);
-            break;
+            return loadGroceryList(state, action);
     }
 
-    return newState || state;
+    return state;
 }
