@@ -15,7 +15,7 @@ export class GroceryListEffects {
         private store: Store<any>,
     ) {}
 
-    // Effects create an observable which is binds to the store's action stream.
+    // Effects are obserables which are bound to the store's action stream.
     // They watch the stream for actions which match types they are concerned
     // with. When such an action occurs, the effect may combine action data,
     // the current state of the store, and any other data. It returns a new

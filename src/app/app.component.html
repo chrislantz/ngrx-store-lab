@@ -16,17 +16,20 @@
   <tbody>
     <tr *ngFor="let item of groceryList">
       <td>
-        <button (click)="incrementItemQuantity(item.uuid)">+</button>
-        {{item.quantity}}
         <button (click)="decrementItemQuantity(item.uuid)">-</button>
+        {{item.quantity}}
+        <button (click)="incrementItemQuantity(item.uuid)">+</button>
       </td>
-      <td>{{item.name}}</td>
+      <td>
+        {{item.name}}
+        <button (click)="removeItem(item.uuid)">x</button>
+      </td>
       <td *ngIf="item.price">${{item.price}}</td>
       <td *ngIf="item.price">${{item.price * item.quantity}}</td>
     </tr>
     <tr>
-      <td><input [(ngModel)]="quantityInput" type="text" name="quantity" id="quantityInput"/></td>
-      <td><input [(ngModel)]="nameInput" type="text" name="name" id="nameInput"/></td>
+      <td><input [(ngModel)]="quantityInput" placeholder="# items" type='text' name='quantity' id='quantityInput'/></td>
+      <td><input [(ngModel)]="nameInput" placeholder="item name" type='text' name='name' id='nameInput'/></td>
       <td><button (click)="addItem()">Add Item</button></td>
   </tbody>
 </table>
