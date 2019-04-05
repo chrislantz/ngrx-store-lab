@@ -48,8 +48,6 @@ function incrementItemQuantity(state: GroceryList, action: IncrementItemQuantity
 // The reducer dispatch method, we send the action to a specific reducer function based upon
 // the actions type, compute an updated state and return it.
 export function reducer(state: GroceryList = initialGroceryList, action: GroceryListAction) {
-    let newState: GroceryList;
-
     switch (action.type) {
         case GroceryListActionTypes.LOAD_GROCERY_LIST:
             return loadGroceryList(state, action);
