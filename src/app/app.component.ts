@@ -1,8 +1,13 @@
 import { v4 as newUuid } from 'uuid';
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { each } from 'lodash';
 import { Store, select } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/first';
 
 import { GroceryList } from './data.model';
 import {
@@ -15,6 +20,7 @@ import {
     SetFilterAction,
 } from './store/actions';
 import groceryData from './data/data.json';
+import pricingData from './data/pricing.json';
 import { fromGroceries } from './store/selectors';
 
 interface AppState {
@@ -30,6 +36,7 @@ interface AppState {
 export class AppComponent implements OnInit, OnDestroy {
     title = 'Grocery List';
     groceryList$: Observable<GroceryList>; // Observable
+    totalCartPrice$: Observable<number>;
     groceryList: GroceryList; // View variable
 
     // inputs
@@ -43,24 +50,27 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.groceryList$ = this.store.select(fromGroceries.selectFilteredAndSortedGroceryItems);
+        this.totalCartPrice$ = this.store.select(fromGroceries.selectTotalCartPrice);
 
-        // Pretend this was the result of getting this data via some async fetch
-        setTimeout(() => {
-            // Here we have revieved groceryData and are loading it into the store
-            this.store.dispatch(new LoadGroceryListAction(groceryData));
-        }, 0);
+        // Create observables which resolve with our data after a specified delay
+        const groceryData$ = Observable.of(groceryData).delay(100);
+        const pricingData$ = Observable.of(pricingData).delay(2500);
+
+        // TODO: merge pricing data into our grocery list data and dispatch LoadGroceryListAction
     }
 
     addItem() {
         const name = this.nameInput;
         const quantity = parseInt(this.quantityInput) || 1;
         const uuid = newUuid();
+        const price = pricingData && pricingData[name].price;
 
         // Dispatch an add action to the store
         this.store.dispatch(new AddGroceryItemAction({
             uuid,
             name,
-            quantity
+            quantity,
+            price
         }));
 
         // Reset the inputs

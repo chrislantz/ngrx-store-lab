@@ -1,4 +1,5 @@
 <h1>{{title}}</h1>
+<h3 *ngIf="totalCartPrice$ | async as totalCartPrice">Total Price: ${{totalCartPrice}}</h3>
 <div class="filterContainer">
   <label for="filter">Filter:</label>
   <input [(ngModel)]="filterInput" type="text" id="filter" name="filter" (ngModelChange)="filterChanged($event)"/>
@@ -8,7 +9,7 @@
     <tr>    
       <th (click)="sort('quantity')">Quantity</th>
       <th (click)="sort('name')">Item</th>
-      <th>Price per Unit</th>
+      <th (click)="sort('price')">Price per Unit</th>
       <th>Total Price</th>
     </tr> 
   </thead>

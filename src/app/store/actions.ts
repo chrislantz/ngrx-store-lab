@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { GroceryItem, GroceryItemFilter, GroceryItemSort } from '../data.model';
+import { GroceryItem, GroceryItemFilter, GroceryItemSort, PriceData } from '../data.model';
 
 export enum GroceryListActionTypes {
     LOAD_GROCERY_LIST = 'LOAD_GROCERY_LIST',
@@ -9,7 +9,8 @@ export enum GroceryListActionTypes {
     DECREMENT_ITEM_QUANTITY = 'DECREMENT_ITEM_QUANTITY',
     SET_FILTER = 'SET_FILTER',
     SET_SORT = 'SET_SORT',
-    NO_OP = 'NO_OP'
+    NO_OP = 'NO_OP',
+    SET_PRICE_DATA = 'SET_PRICE_DATA'
 }
 
 export class LoadGroceryListAction implements Action {

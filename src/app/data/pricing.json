@@ -1,0 +1,17 @@
+{
+    "milk": {
+        "price": 2
+    },
+    "apple": {
+        "price": 0.5
+    },
+    "carrot": {
+        "price": 0.1
+    },
+    "egg": {
+        "price": 0.25
+    },
+    "bread": {
+        "price": 3
+    }
+}

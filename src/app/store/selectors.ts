@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import { find, orderBy, filter } from 'lodash';
+import { find, orderBy, filter, each } from 'lodash';
 
 import { GroceryList, GroceryItem, GroceryItemFilter, GroceryItemSort } from '../data.model';
 
@@ -35,9 +35,17 @@ const selectFilteredAndSortedGroceryItems = createSelector(
     }
 );
 
+const selectTotalCartPrice = createSelector(
+    selectFilteredAndSortedGroceryItems,
+    (items: GroceryItem[]) => {
+        // TODO: walk the items list and return the total price of our list
+    }
+);
+
 export const fromGroceries = {
     selectGroceryItems,
     selectGroceryItemFilter,
     selectGroceryItemSort,
     selectFilteredAndSortedGroceryItems,
+    selectTotalCartPrice,
 };

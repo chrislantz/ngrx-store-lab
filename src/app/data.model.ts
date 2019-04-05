@@ -20,3 +20,9 @@ export interface GroceryItemSort {
     sort: string[];
     sortOrder: string[];
 }
+
+export interface PriceData {
+    [name: string]: {
+        price: number;
+    }
+}
