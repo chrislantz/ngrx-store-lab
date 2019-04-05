@@ -20,4 +20,7 @@ export class GroceryListEffects {
     // with. When such an action occurs, the effect may combine action data,
     // the current state of the store, and any other data. It returns a new
     // action which is dispatched against the store.
+
+    // TODO: Implement an effect which removes an item when its quantity is
+    // decremented below 1.
 }
