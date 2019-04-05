@@ -38,7 +38,13 @@ const selectFilteredAndSortedGroceryItems = createSelector(
 const selectTotalCartPrice = createSelector(
     selectFilteredAndSortedGroceryItems,
     (items: GroceryItem[]) => {
-        // TODO: walk the items list and return the total price of our list
+        let totalCartPrice = 0;
+        each(items, (item) => {
+            if (item.price) {
+                totalCartPrice += item.price * item.quantity;
+            }
+        });
+        return totalCartPrice;
     }
 );
 

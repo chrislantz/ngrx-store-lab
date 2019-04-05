@@ -56,7 +56,18 @@ export class AppComponent implements OnInit, OnDestroy {
         const groceryData$ = Observable.of(groceryData).delay(100);
         const pricingData$ = Observable.of(pricingData).delay(2500);
 
-        // TODO: merge pricing data into our grocery list data and dispatch LoadGroceryListAction
+        // combineLatest() will update any time either observable updates, AFTER both observables
+        // have updated at least once. In this instance we only care about the first updates, which
+        // is why we user first(). This makes it so we don't need to manually unsubscribe as first
+        // takes care of that for us.
+        groceryData$.combineLatest(pricingData$).first().subscribe(([gData, pData]) => {
+            each(gData.items, (item) => {
+                const itemPriceInfo = pData[item.name];
+                const itemPrice = itemPriceInfo && itemPriceInfo.price;
+                item.price = itemPrice;
+            });
+            this.store.dispatch(new LoadGroceryListAction(gData));
+        });
     }
 
     addItem() {
