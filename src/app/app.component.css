@@ -43,12 +43,18 @@ button {
     border-radius: 5px;
     font-size: 14px;
     border-style: none;
+    cursor: pointer;
 }
 
 td:first-child {
     text-align: center;
     padding-right: 20px;
     max-width: 112px;
+}
+
+td:nth-child(2) button {
+    float: right;
+    padding: 5px 10px;
 }
 
 td:first-child button:first-child {
@@ -59,7 +65,7 @@ td:first-child button:last-child {
     float: right;
 }
 
-td button:first-child:last-child {
+td:nth-child(3) button {
     padding: 7px 15px;
 }
 

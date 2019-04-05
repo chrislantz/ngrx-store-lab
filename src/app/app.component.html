@@ -15,7 +15,10 @@
         {{item.quantity}}
         <button (click)="incrementItemQuantity(item.uuid)">+</button>
       </td>
-      <td>{{item.name}}</td>
+      <td>
+        {{item.name}}
+        <button (click)="removeItem(item.uuid)">x</button>
+      </td>
       <td *ngIf="item.price">${{item.price}}</td>
       <td *ngIf="item.price">${{item.price * item.quantity}}</td>
     </tr>
