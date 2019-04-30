@@ -63,7 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
         const name = this.nameInput;
         const quantity = parseInt(this.quantityInput) || 1;
         const uuid = newUuid();
-        const price = pricingData && pricingData[name].price;
+        const price = pricingData && pricingData[name] && pricingData[name].price;
 
         // Dispatch an add action to the store
         this.store.dispatch(new AddGroceryItemAction({
