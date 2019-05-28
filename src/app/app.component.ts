@@ -12,9 +12,6 @@ import { GroceryListState } from './data.model';
 import {
     LoadGroceryListAction,
     AddGroceryItemAction,
-    RemoveGroceryItemAction,
-    IncrementItemQuantityAction,
-    DecrementItemQuantityAction,
     SetSortAction,
     SetFilterAction,
 } from './store/actions';
@@ -85,19 +82,6 @@ export class AppComponent implements OnInit, OnDestroy {
         // Reset the inputs
         this.nameInput = '';
         this.quantityInput = '';
-    }
-
-    removeItem(uuid: string) {
-        // Dispatch a remove action to the store
-        this.store.dispatch(new RemoveGroceryItemAction(uuid));
-    }
-
-    incrementItemQuantity(uuid: string): void {
-        this.store.dispatch(new IncrementItemQuantityAction(uuid));
-    }
-
-    decrementItemQuantity(uuid: string): void {
-        this.store.dispatch(new DecrementItemQuantityAction(uuid));
     }
 
     sort(sort: string) {

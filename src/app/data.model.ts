@@ -1,5 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
+export const GroceryListStoreName = 'groceryList';
+
 export interface GroceryListState extends EntityState<GroceryItem> {
     filter: GroceryItemFilter;
     sort: GroceryItemSort;

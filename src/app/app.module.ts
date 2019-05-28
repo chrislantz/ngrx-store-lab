@@ -9,22 +9,22 @@ import { reducer } from './store/reducer';
 import { GroceryListEffects } from './store/effects';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
-import { groceryListInitialState } from './data.model';
+import { groceryListInitialState, GroceryListStoreName } from './data.model';
+import { GroceryItemComponent } from './grocery-item/grocery-item.component';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        GroceryItemComponent
     ],
     imports: [
         BrowserModule,
-        StoreModule.forRoot({
-            groceryList: reducer,
-        }, {
-            initialState: {
-                groceryList: groceryListInitialState
-            }
+        StoreModule.forRoot({}),
+        StoreModule.forFeature(GroceryListStoreName, reducer, {
+            initialState: groceryListInitialState
         }),
-        EffectsModule.forRoot([
+        EffectsModule.forRoot([]),
+        EffectsModule.forFeature([
             GroceryListEffects
         ]),
         FormsModule,
