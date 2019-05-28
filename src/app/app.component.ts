@@ -1,15 +1,14 @@
 import { v4 as newUuid } from 'uuid';
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { each } from 'lodash';
-import { Store, select } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/first';
 
-import { GroceryList } from './data.model';
+import { GroceryListState } from './data.model';
 import {
     LoadGroceryListAction,
     AddGroceryItemAction,
@@ -35,9 +34,8 @@ interface AppState {
 })
 export class AppComponent implements OnInit, OnDestroy {
     title = 'Grocery List';
-    groceryList$: Observable<GroceryList>; // Observable
+    groceryList$: Observable<GroceryListState>; // Observable
     totalCartPrice$: Observable<number>;
-    groceryList: GroceryList; // View variable
 
     // inputs
     quantityInput = '';
