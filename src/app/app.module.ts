@@ -11,6 +11,8 @@ import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { groceryListInitialState, GroceryListStoreName } from './data.model';
 import { GroceryItemComponent } from './grocery-item/grocery-item.component';
+import { PricingService } from './pricing.service';
+import { GroceryDataService } from './grocery-data.service';
 
 @NgModule({
     declarations: [
@@ -33,7 +35,7 @@ import { GroceryItemComponent } from './grocery-item/grocery-item.component';
             logOnly: environment.production
         })
     ],
-    providers: [],
+    providers: [PricingService, GroceryDataService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

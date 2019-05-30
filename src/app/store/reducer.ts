@@ -2,24 +2,24 @@ import { GroceryListState, GroceryItemSort, groceryListAdapter, groceryListIniti
 
 import {
     GroceryListAction,
-    LoadGroceryListAction,
-    AddGroceryItemAction,
     RemoveGroceryItemAction,
     IncrementItemQuantityAction,
     DecrementItemQuantityAction,
     SetFilterAction,
     SetSortAction,
-    GroceryListActionTypes
+    GroceryListActionTypes,
+    AddGroceryItemListAction,
+    AddGroceryItemWithPriceAction
 } from './actions';
 
 // A specific reducer method for the LoadGroceryListAction. It is important that we return
 // a new state which is cloned from our old state along with any changes we make which result
 // from the action.
-function loadGroceryList(state: GroceryListState, action: LoadGroceryListAction): GroceryListState {
-    return groceryListAdapter.addAll(action.groceryList.items, state);
+function addGroceryItemList(state: GroceryListState, action: AddGroceryItemListAction): GroceryListState {
+    return groceryListAdapter.addAll(action.groceryList, state);
 }
 
-function addGroceryItem(state: GroceryListState, action: AddGroceryItemAction): GroceryListState {
+function addGroceryItem(state: GroceryListState, action: AddGroceryItemWithPriceAction): GroceryListState {
     return groceryListAdapter.addOne(action.item, state);
 }
 
@@ -77,9 +77,9 @@ function setSort(state: GroceryListState, action: SetSortAction): GroceryListSta
 // the actions type, compute an updated state and return it.
 export function reducer(state: GroceryListState = groceryListInitialState, action: GroceryListAction): GroceryListState {
     switch (action.type) {
-        case GroceryListActionTypes.LOAD_GROCERY_LIST:
-            return loadGroceryList(state, action);
-        case GroceryListActionTypes.ADD_GROCERY_ITEM:
+        case GroceryListActionTypes.ADD_GROCERY_ITEM_LIST:
+            return addGroceryItemList(state, action);
+        case GroceryListActionTypes.ADD_GROCERY_ITEM_WITH_PRICE:
             return addGroceryItem(state, action);
         case GroceryListActionTypes.REMOVE_GROCERY_ITEM:
             return removeGroceryItem(state, action);

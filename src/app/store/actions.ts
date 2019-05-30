@@ -1,9 +1,11 @@
 import { Action } from '@ngrx/store';
-import { GroceryItem, GroceryItemFilter, GroceryItemSort, PriceData } from '../data.model';
+import { GroceryItem, GroceryItemFilter } from '../data.model';
 
 export enum GroceryListActionTypes {
     LOAD_GROCERY_LIST = 'LOAD_GROCERY_LIST',
+    ADD_GROCERY_ITEM_LIST = 'ADD_GROCERY_ITEM_LIST',
     ADD_GROCERY_ITEM = 'ADD_GROCERY_ITEM',
+    ADD_GROCERY_ITEM_WITH_PRICE = 'ADD_GROCERY_ITEM_WITH_PRICE',
     REMOVE_GROCERY_ITEM = 'REMOVE_GROCERY_ITEM',
     INCREMENT_ITEM_QUANTITY = 'INCREMENT_ITEM_QUANTITY',
     DECREMENT_ITEM_QUANTITY = 'DECREMENT_ITEM_QUANTITY',
@@ -15,14 +17,24 @@ export enum GroceryListActionTypes {
 
 export class LoadGroceryListAction implements Action {
     readonly type = GroceryListActionTypes.LOAD_GROCERY_LIST;
+}
 
-    constructor(public groceryList: any) {}
+export class AddGroceryItemListAction implements Action {
+    readonly type = GroceryListActionTypes.ADD_GROCERY_ITEM_LIST;
+
+    constructor(public groceryList: GroceryItem[]) {}
 }
 
 export class AddGroceryItemAction implements Action {
     readonly type = GroceryListActionTypes.ADD_GROCERY_ITEM;
 
-    constructor(public item: GroceryItem) {}
+    constructor(public name: string, public quantity: number) {}
+}
+
+export class AddGroceryItemWithPriceAction implements Action {
+    readonly type = GroceryListActionTypes.ADD_GROCERY_ITEM_WITH_PRICE;
+
+    constructor(public item: GroceryItem) { }
 }
 
 export class RemoveGroceryItemAction implements Action {
@@ -60,7 +72,9 @@ export class SetSortAction implements Action {
 
 export type GroceryListAction =
     | LoadGroceryListAction
+    | AddGroceryItemListAction
     | AddGroceryItemAction
+    | AddGroceryItemWithPriceAction
     | RemoveGroceryItemAction
     | DecrementItemQuantityAction
     | IncrementItemQuantityAction
