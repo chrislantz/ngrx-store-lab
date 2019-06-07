@@ -1,0 +1,13 @@
+<ng-container *ngIf="groceryItem$ | async; let groceryItem">
+  <td>
+    <button (click)="decrementItemQuantity()">-</button>
+    {{groceryItem.quantity}}
+    <button (click)="incrementItemQuantity()">+</button>
+  </td>
+  <td>
+    {{groceryItem.name}}
+    <button (click)="removeItem()">x</button>
+  </td>
+  <td *ngIf="groceryItem.price">${{groceryItem.price}}</td>
+  <td *ngIf="groceryItem.price">${{groceryItem.price * groceryItem.quantity}}</td>
+</ng-container>

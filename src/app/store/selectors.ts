@@ -1,23 +1,25 @@
-import { createSelector } from '@ngrx/store';
-import { find, orderBy, filter, each } from 'lodash';
+import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { orderBy, filter, each } from 'lodash';
 
-import { GroceryList, GroceryItem, GroceryItemFilter, GroceryItemSort } from '../data.model';
+import { GroceryListState, GroceryItem, GroceryItemFilter, GroceryItemSort, groceryListAdapter, GroceryListStoreName } from '../data.model';
 
-const getGroceryList = (state) => state.groceryList;
+const adapterSelectors = groceryListAdapter.getSelectors();
+
+const selectGroceryListState = createFeatureSelector<GroceryListState>(GroceryListStoreName);
 
 const selectGroceryItems = createSelector(
-    getGroceryList,
-    (groceryList: GroceryList) => groceryList.items,
+    selectGroceryListState,
+    adapterSelectors.selectAll
 );
 
 const selectGroceryItemFilter = createSelector(
-    getGroceryList,
-    (groceryList: GroceryList) => groceryList.filter,
+    selectGroceryListState,
+    (groceryList: GroceryListState) => groceryList.filter,
 );
 
 const selectGroceryItemSort = createSelector(
-    getGroceryList,
-    (groceryList: GroceryList) => groceryList.sort,
+    selectGroceryListState,
+    (groceryList: GroceryListState) => groceryList.sort,
 );
 
 const selectFilteredAndSortedGroceryItems = createSelector(
@@ -48,10 +50,24 @@ const selectTotalCartPrice = createSelector(
     }
 );
 
+const selectGroceryItemIds = createSelector(
+    selectGroceryListState,
+    adapterSelectors.selectIds
+);
+
+const selectGroceryItem = ((uuid: string) => {
+    return createSelector(
+        selectGroceryListState,
+        (state) => state.entities[uuid]
+    );
+});
+
 export const fromGroceries = {
     selectGroceryItems,
     selectGroceryItemFilter,
     selectGroceryItemSort,
     selectFilteredAndSortedGroceryItems,
     selectTotalCartPrice,
+    selectGroceryItem,
+    selectGroceryItemIds,
 };

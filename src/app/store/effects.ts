@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { find } from 'lodash';
 
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/map';
 
 import { GroceryListActionTypes, DecrementItemQuantityAction, RemoveGroceryItemAction, NoopAction } from './actions';
+import { GroceryListState } from '../data.model';
 
 @Injectable()
 export class GroceryListEffects {
     constructor(
         private actions$: Actions,
-        private store: Store<any>,
+        private store: Store<{groceryList: GroceryListState}>,
     ) {}
 
     // Effects are obserables which are bound to the store's action stream.
@@ -25,7 +25,7 @@ export class GroceryListEffects {
     emptyQuantity$ = this.actions$.ofType<DecrementItemQuantityAction>(GroceryListActionTypes.DECREMENT_ITEM_QUANTITY)
     .withLatestFrom(this.store)
     .map(([action, state]) => {
-        const item = find(state.groceryList.items, { uuid: action.uuid });
+        const item = state.groceryList.entities[action.uuid];
         const quantity = item.quantity;
         if (quantity < 1) {
             return new RemoveGroceryItemAction(action.uuid);
