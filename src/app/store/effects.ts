@@ -1,18 +1,35 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { find } from 'lodash';
 
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/observable/forkJoin';
 
-import { GroceryListActionTypes, DecrementItemQuantityAction, RemoveGroceryItemAction, NoopAction } from './actions';
+import {
+    GroceryListActionTypes,
+    DecrementItemQuantityAction,
+    RemoveGroceryItemAction,
+    NoopAction,
+    LoadGroceryListAction,
+    AddGroceryItemWithPriceAction,
+    AddGroceryItemListAction,
+    AddGroceryItemAction
+} from './actions';
+import { GroceryListState, GroceryItem } from '../data.model';
+import { PricingService } from '../pricing.service';
+import { GroceryDataService } from '../grocery-data.service';
+import { Observable } from 'rxjs/Observable';
+import { v4 as newUuid } from 'uuid';
 
 @Injectable()
 export class GroceryListEffects {
     constructor(
         private actions$: Actions,
-        private store: Store<any>,
+        private store: Store<{groceryList: GroceryListState}>,
+        private pricingService: PricingService,
+        private groceryDataService: GroceryDataService,
     ) {}
 
     // Effects are obserables which are bound to the store's action stream.
@@ -25,11 +42,47 @@ export class GroceryListEffects {
     emptyQuantity$ = this.actions$.ofType<DecrementItemQuantityAction>(GroceryListActionTypes.DECREMENT_ITEM_QUANTITY)
     .withLatestFrom(this.store)
     .map(([action, state]) => {
-        const item = find(state.groceryList.items, { uuid: action.uuid });
+        const item = state.groceryList.entities[action.uuid];
         const quantity = item.quantity;
         if (quantity < 1) {
             return new RemoveGroceryItemAction(action.uuid);
         }
         return new NoopAction();
+    });
+
+    @Effect()
+    addGroceryItem = this.actions$.ofType<AddGroceryItemAction>(GroceryListActionTypes.ADD_GROCERY_ITEM)
+    .mergeMap((action) => {
+        return this.pricingService.getPriceForItem(action.name)
+        .map((price) => {
+            const itemWithPrice: GroceryItem = {
+                name: action.name,
+                quantity: action.quantity,
+                uuid: newUuid(),
+                price
+            };
+
+            return new AddGroceryItemWithPriceAction(itemWithPrice);
+        });
+    });
+
+    @Effect()
+    loadGroceryList$ = this.actions$.ofType<LoadGroceryListAction>(GroceryListActionTypes.LOAD_GROCERY_LIST)
+    .mergeMap(() => {
+        const groceryData$ = this.groceryDataService.fetchGroceryData();
+
+        return groceryData$.map((groceryData) => {
+            return groceryData.map((groceryItem) => {
+                return this.pricingService.getPriceForItem(groceryItem.name)
+                .map((price): GroceryItem => {
+                    return {
+                        ...groceryItem,
+                        price
+                    };
+                });
+            });
+        })
+        .mergeMap(observables => Observable.forkJoin(observables))
+        .map((items => new AddGroceryItemListAction(items)));
     });
 }
