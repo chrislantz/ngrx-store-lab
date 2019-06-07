@@ -1,23 +1,25 @@
 import { createSelector } from '@ngrx/store';
-import { find, orderBy, filter, each } from 'lodash';
+import { orderBy, filter, each } from 'lodash';
 
-import { GroceryList, GroceryItem, GroceryItemFilter, GroceryItemSort } from '../data.model';
+import { GroceryListState, GroceryItem, GroceryItemFilter, GroceryItemSort, groceryListAdapter } from '../data.model';
+
+const adapterSelectors = groceryListAdapter.getSelectors();
 
 const getGroceryList = (state) => state.groceryList;
 
 const selectGroceryItems = createSelector(
     getGroceryList,
-    (groceryList: GroceryList) => groceryList.items,
+    adapterSelectors.selectAll
 );
 
 const selectGroceryItemFilter = createSelector(
     getGroceryList,
-    (groceryList: GroceryList) => groceryList.filter,
+    (groceryList: GroceryListState) => groceryList.filter,
 );
 
 const selectGroceryItemSort = createSelector(
     getGroceryList,
-    (groceryList: GroceryList) => groceryList.sort,
+    (groceryList: GroceryListState) => groceryList.sort,
 );
 
 const selectFilteredAndSortedGroceryItems = createSelector(
